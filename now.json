@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "*.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/cassette",
+      "dest": "/cassette.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "src": "/cassettes",
+      "dest": "/cassettes.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "src": "/gist/(.*)",
+      "dest": "/gist.js?id=$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  ],
+  "env": {
+    "MONGOPWD": "@mongopwd",
+    "USERNAME": "@username",
+    "PASSWORD": "@password"
+  }
+}

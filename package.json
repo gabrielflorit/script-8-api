@@ -1,0 +1,22 @@
+{
+  "name": "script-8-api",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "body": "^5.1.0",
+    "gists": "^2.0.0",
+    "micro": "^9.3.3",
+    "mongodb": "^3.1.10",
+    "url": "^0.11.0"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielflorit/script-8-api.git"
+  },
+  "author": "Gabriel Florit",
+  "bugs": {
+    "url": "https://github.com/gabrielflorit/script-8-api/issues"
+  },
+  "homepage": "https://github.com/gabrielflorit/script-8-api#readme"
+}
