@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
   const pwd = process.env.MONGOPWD
   const uri = `mongodb+srv://script-8-read-write:${pwd}@script-8-tr3jx.mongodb.net/script-8?retryWrites=true`
   const txt = await json(req)
-  const { token, gistId } = txt
+  const { token } = txt
 
   const gh = new GitHub({ token })
 
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
       }
     )
     .then(userProfile => {
-      const user = _.get(userProfile, 'login')
+      const user = userProfile.login || ''
       MongoClient.connect(uri, (err, client) => {
         if (err) {
           console.log({ err })
