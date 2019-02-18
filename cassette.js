@@ -5,7 +5,7 @@ module.exports = async (req, res) => {
   const pwd = process.env.MONGOPWD
   const uri = `mongodb+srv://script-8-read-write:${pwd}@script-8-tr3jx.mongodb.net/script-8?retryWrites=true`
   const txt = await json(req)
-  const { user, gist, cover, title, isFork } = txt
+  const { user, gist, cover, title, isFork, isPrivate } = txt
 
   MongoClient.connect(uri, (err, client) => {
     if (err) {
@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
         { gist },
         {
           $setOnInsert: { user, gist, isFork },
-          $set: { cover, title, updated: Date.now() }
+          $set: { cover, title, updated: Date.now(), isPrivate }
         },
         { upsert: true },
         (error, result) => {

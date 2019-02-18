@@ -29,6 +29,13 @@
       }
     },
     {
+      "src": "/private-cassettes",
+      "dest": "/privateCassettes.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
       "src": "/gist/(.*)",
       "dest": "/gist.js?id=$1",
       "headers": {

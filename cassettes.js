@@ -13,16 +13,18 @@ module.exports = (req, res) => {
       const db = client.db('script-8')
       const collection = db.collection('shelf')
 
-      collection.find().toArray((error, results) => {
-        if (!error) {
-          send(res, 200, results)
-          client.close()
-        } else {
-          console.log({ error })
-          send(res, 500, 'Error retrieving cassettes.')
-          client.close()
-        }
-      })
+      collection
+        .find({ isPrivate: { $ne: true } })
+        .toArray((error, results) => {
+          if (!error) {
+            send(res, 200, results)
+            client.close()
+          } else {
+            console.log({ error })
+            send(res, 500, 'Error retrieving cassettes.')
+            client.close()
+          }
+        })
     }
   })
 }

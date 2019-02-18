@@ -5,6 +5,7 @@
   "dependencies": {
     "body": "^5.1.0",
     "gists": "^2.0.0",
+    "github-api": "^3.0.0",
     "micro": "^9.3.3",
     "mongodb": "^3.1.10",
     "url": "^0.11.0"
