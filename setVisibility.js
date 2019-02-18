@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
   const pwd = process.env.MONGOPWD
   const uri = `mongodb+srv://script-8-read-write:${pwd}@script-8-tr3jx.mongodb.net/script-8?retryWrites=true`
   const txt = await json(req)
-  const { user, gist, token, isPrivate } = txt
+  const { gist, token, isPrivate } = txt
 
   const gh = new GitHub({ token })
 
@@ -21,34 +21,31 @@ module.exports = async (req, res) => {
     )
     .then(userProfile => {
       const userProfileLogin = userProfile.login || ''
-      const isMatch = userProfileLogin === user
-      if (isMatch) {
-        MongoClient.connect(uri, (err, client) => {
-          if (err) {
-            console.log({ err })
-            send(res, 500, 'Error connecting to the database.')
-          } else {
-            const db = client.db('script-8')
-            const collection = db.collection('shelf')
+      MongoClient.connect(uri, (err, client) => {
+        if (err) {
+          console.log({ err })
+          send(res, 500, 'Error connecting to the database.')
+        } else {
+          const db = client.db('script-8')
+          const collection = db.collection('shelf')
 
-            collection.updateOne(
-              { gist },
-              {
-                $set: { isPrivate }
-              },
-              (error, result) => {
-                if (!error) {
-                  send(res, 200, result)
-                  client.close()
-                } else {
-                  console.log({ error })
-                  send(res, 500, 'Error updating the cassettes collection.')
-                  client.close()
-                }
+          collection.updateOne(
+            { gist, user: userProfileLogin },
+            {
+              $set: { isPrivate }
+            },
+            (error, result) => {
+              if (!error) {
+                send(res, 200, result)
+                client.close()
+              } else {
+                console.log({ error })
+                send(res, 500, 'Error updating the cassettes collection.')
+                client.close()
               }
-            )
-          }
-        })
-      }
+            }
+          )
+        }
+      })
     })
 }
