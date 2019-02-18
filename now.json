@@ -15,6 +15,13 @@
       }
     },
     {
+      "src": "/set-visibility",
+      "dest": "/setVisibility.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
       "src": "/cassette",
       "dest": "/cassette.js",
       "headers": {
