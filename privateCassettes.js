@@ -20,42 +20,28 @@ module.exports = async (req, res) => {
       }
     )
     .then(userProfile => {
-      gh.getGist(gistId)
-        .read()
-        .then(
-          response => response.data,
-          error => {
-            console.error({ error })
-            send(res, 500, 'Error connecting to the database.')
-          }
-        )
-        .then(gist => {
-          const gistOwnerLogin = _.get(gist, 'owner.login')
-          const userProfileLogin = _.get(userProfile, 'login')
-          if (gistOwnerLogin === userProfileLogin) {
-            MongoClient.connect(uri, (err, client) => {
-              if (err) {
-                console.log({ err })
-                send(res, 500, 'Error connecting to the database.')
-              } else {
-                const db = client.db('script-8')
-                const collection = db.collection('shelf')
+      const user = _.get(userProfile, 'login')
+      MongoClient.connect(uri, (err, client) => {
+        if (err) {
+          console.log({ err })
+          send(res, 500, 'Error connecting to the database.')
+        } else {
+          const db = client.db('script-8')
+          const collection = db.collection('shelf')
 
-                collection.find({ gist: gistId }).toArray((error, results) => {
-                  if (!error) {
-                    send(res, 200, results)
-                    client.close()
-                  } else {
-                    console.log({ error })
-                    send(res, 500, 'Error retrieving cassettes.')
-                    client.close()
-                  }
-                })
+          collection
+            .find({ user, isPrivate: true })
+            .toArray((error, results) => {
+              if (!error) {
+                send(res, 200, results)
+                client.close()
+              } else {
+                console.log({ error })
+                send(res, 500, 'Error retrieving cassettes.')
+                client.close()
               }
             })
-          } else {
-            send(res, 500, 'Login does not match')
-          }
-        })
+        }
+      })
     })
 }
